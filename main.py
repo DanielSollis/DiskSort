@@ -18,6 +18,7 @@ def walking():
 
 def get_dirs(path, dirs_list):
     dir_size_list = [0, path]
+    print path
     for f in os.listdir(path):
         new_path = path + '/' + f
         if os.path.isdir(new_path):
@@ -27,7 +28,8 @@ def get_dirs(path, dirs_list):
                 pass
         if os.path.isfile(new_path):
             dir_size_list[0] += os.path.getsize(new_path)
-    ordered_insert(dirs_list, dir_size_list)
+    if dir_size_list[0] != 0:
+        ordered_insert(dirs_list, dir_size_list)
     return dir_size_list[0]
 
 
@@ -36,9 +38,9 @@ def ordered_insert(sorted_list, dir_list):
     val = dir_list[0]
     if not sorted_list:
         sorted_list.append(dir_list)
-    elif sorted_list[len(sorted_list) - 1] <= val:
+    elif sorted_list[len(sorted_list) - 1][0] <= val:
         sorted_list.append(dir_list)
-    elif sorted_list[0] >= val:
+    elif sorted_list[0][0] >= val:
         sorted_list.insert(0, dir_list)
     elif len(sorted_list) == 2:
         sorted_list.insert(1, dir_list)
@@ -50,19 +52,19 @@ def binary_search(sorted_list, dir_list, begin, end):
         done = False
         while not done:
             mid = (end - begin) / 2 + begin
-            if sorted_list[mid] <= val <= sorted_list[mid + 1]:
+            if sorted_list[mid][0] <= val <= sorted_list[mid + 1][0]:
                 sorted_list.insert(mid + 1, dir_list)
                 done = True
-            elif sorted_list[mid] > val:
+            elif sorted_list[mid][0] > val:
                 end = mid
-            elif sorted_list[mid] < val:
+            elif sorted_list[mid][0] < val:
                 begin = mid
 
 
 if __name__ == '__main__':
     dirs_list = []
     start = time()
-    get_dirs("C:/", dirs_list)
+    get_dirs("E:/", dirs_list)
     end = time()
     print end - start
 
